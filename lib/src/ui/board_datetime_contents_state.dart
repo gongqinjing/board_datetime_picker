@@ -417,6 +417,10 @@ abstract class BoardDatetimeContentState<T extends BoardDateTimeCommonResult,
         x.changeDate(newVal);
       } else if (x.type == DateType.day && x.value != newVal.day) {
         x.changeDate(newVal);
+      } else if (x.type == DateType.hour && x.value != newVal.hour) {
+        x.changeDate(newVal);
+      } else if (x.type == DateType.minute && x.value != newVal.minute) {
+        x.changeDate(newVal);
       }
     }
     setNewValue(newVal);
