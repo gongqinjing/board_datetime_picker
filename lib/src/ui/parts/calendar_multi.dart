@@ -119,8 +119,8 @@ class _MultipleCalendarWidgetState
           to.year,
           to.month,
           to.day,
-          initialEndDate.hour,
-          initialEndDate.minute,
+          0,
+          0,
         ),
       );
       selectedDate = [to];
