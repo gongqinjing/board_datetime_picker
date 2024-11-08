@@ -188,10 +188,10 @@ abstract class BoardDatetimeContentState<T extends BoardDateTimeCommonResult,
     );
 
     calendarAnimation = calendarAnimationController.drive(curve).drive(
-          Tween<double>(begin: 0.0, end: 1.0),
+          Tween<double>(begin: 1.0, end: 0.0),
         );
     pickerFormAnimation = calendarAnimationController.drive(curve).drive(
-          Tween<double>(begin: 1.0, end: 0.0),
+          Tween<double>(begin: 0.0, end: 1.0),
         );
 
     /// Set up options
