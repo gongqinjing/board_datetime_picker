@@ -172,22 +172,41 @@ abstract class CalendarWidgetState<T extends CalendarWidget> extends State<T> {
           final diff = index - initialPage;
           final date = initialDate.calcMonth(diff);
 
-          return Column(
-            children: [
-              _displayed(date),
-              _weekdays(),
-              Expanded(
-                child: GridView(
-                  padding: const EdgeInsets.all(0),
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 7,
-                    childAspectRatio: 1,
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              // 计算固定高度部分
+              final displayedHeight = 40 + topMargin; // _displayed的高度
+              final weekdaysHeight = 24 + 20; // _weekdays的高度
+              final fixedHeight = displayedHeight + weekdaysHeight;
+              
+              // 计算GridView可用高度
+              final availableHeight = constraints.maxHeight - fixedHeight;
+              
+              // 计算最佳的childAspectRatio
+              // 假设最多6行日期，7列
+              final maxRows = 6;
+              final itemHeight = availableHeight / maxRows;
+              final itemWidth = constraints.maxWidth / 7;
+              final aspectRatio = itemWidth / itemHeight;
+              
+              return Column(
+                children: [
+                  _displayed(date),
+                  _weekdays(),
+                  Expanded(
+                    child: GridView(
+                      padding: const EdgeInsets.all(0),
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 7,
+                        childAspectRatio: aspectRatio.clamp(0.5, 2.0), // 限制比例范围
+                      ),
+                      children: _generateCalendarOfMonth(date),
+                    ),
                   ),
-                  children: _generateCalendarOfMonth(date),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           );
         },
         onPageChanged: (index) {
